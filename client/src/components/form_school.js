@@ -3,32 +3,47 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { styled } from '@mui/material/styles';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-const Input = styled('input')({
-    display: 'none',
-});
-export default function FormSchool() {
-    const [schoolSelect, setSchoolSelect] = React.useState('');
-    const [teacherSelect, setTeacherSelect] = React.useState('');
-    const [genderSelect, setGenderSelect] = React.useState('');
+import { toast } from 'react-toastify';
+import Swal from "sweetalert2";
 
-    const handleChangeSchool = (event) => {
-        setSchoolSelect(event.target.value);
-    };
-    const handleChangeTeacher = (event) => {
-        setTeacherSelect(event.target.value);
-    };
-    const handleChangeGender = (event) => {
-        setGenderSelect(event.target.value);
-    };
+export default function FormSchool() {
+    const createSchool = (event) => {
+        // toast.error(`You have not been created an account by admin !!!`, {
+        //     position: 'top-center',
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        // });
+        // toast.success(`Active account successfully !!!`, {
+        //     position: 'top-center',
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        // });       
+        Swal.fire({
+            title: 'Delete Student?',
+            text: "Do you want to permanently delete this student?",
+            icon: "warning",
+            marginTop: "200px",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText: "Cancel",
+            confirmButtonText: "Delete",
+          }).then((result) => {
+            if (result.isConfirmed) {
+            //  onDelete(id);
+            }
+          });
+    }
     return (
-        <Box sx={{marginBottom:2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
+        <Box sx={{ marginBottom: 2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
                 Create School
             </Typography>
@@ -40,10 +55,10 @@ export default function FormSchool() {
                 }}
                 noValidate
                 autoComplete="off">
-                <TextField id="outlined-basic" label="Name" variant="outlined" /> 
+                <TextField id="outlined-basic" label="Name" variant="outlined" />
                 <TextField id="outlined-basic" label="Address" variant="outlined" />
-                <Button variant="contained">Submit</Button>
-                </Box>
+                <Button variant="contained" onClick={(event) => createSchool(event)}>Submit</Button>
+            </Box>
         </Box>
     );
 }
