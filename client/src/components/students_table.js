@@ -23,6 +23,8 @@ import Select from '@mui/material/Select';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import Avatar from '@mui/material/Avatar';
+
 const Input = styled('input')({
     display: 'none',
 });
@@ -320,7 +322,7 @@ export default function TableStudent() {
                             a
                         </StyledTableCell>
                         <StyledTableCell align="right">a</StyledTableCell>
-                        <StyledTableCell align="right">a</StyledTableCell>
+                        <StyledTableCell align="right"><Avatar  sx={{marginLeft:"auto",width: 60, height: 60}} alt="Remy Sharp" src="assets/images/user.jpg" /></StyledTableCell>
                         <StyledTableCell align="right">a</StyledTableCell>
                         <StyledTableCell align="right">a</StyledTableCell>
                         <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>a</StyledTableCell>
