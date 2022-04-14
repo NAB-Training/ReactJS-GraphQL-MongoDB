@@ -37,8 +37,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function TableStudent() {
     const [openTeacher, setOpenTeacher] = React.useState(false);
     const [openSchool, setOpenSchool] = React.useState(false)
+    const [openEdit, setOpenEdit] = React.useState(false)
     const handleOpenTeacherDetail = () => setOpenTeacher(!openTeacher);
     const handleOpenSchoolDetail = () => setOpenSchool(!openSchool);
+    const handleOpenEditStudent = () => setOpenEdit(!openEdit);
+
     return (
         <TableContainer component={Paper}>
             <Modal
@@ -139,6 +142,55 @@ export default function TableStudent() {
                     </Box>
                 </Box>
             </Modal>
+            <Modal
+                open={openEdit}
+                onClose={handleOpenEditStudent}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    border: '2px solid #000',
+                    boxShadow: 24,
+                    p: 4,
+                }}>
+                    <Typography 
+                        id="modal-modal-title" 
+                        variant="h6" 
+                        component="h2"
+                        sx={{
+                            textAlign:"center",
+                            fontWeight:"bold",
+                            marginBottom:3
+                        }}
+                        >
+                        Student Edit
+                    </Typography>
+                    <Box sx={{display:"flex"}}>
+                    <Typography 
+                        id="modal-modal-description" 
+                        sx={{
+                            fontSize:16,
+                            fontWeight:"bold",
+                        }}>
+                        Name
+                    </Typography>
+                    <Typography 
+                        id="modal-modal-description" 
+                        sx={{
+                            fontSize:16,
+                            marginLeft:5
+                        }}>
+                        Hà Mộng Khang
+                    </Typography>
+                    </Box>
+                </Box>
+            </Modal>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
@@ -165,7 +217,7 @@ export default function TableStudent() {
                         <StyledTableCell align="right">a</StyledTableCell>
                         <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>a</StyledTableCell>
                         <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>teacher</StyledTableCell>
-                        <StyledTableCell align="right"><EditOutlinedIcon sx={{ color: "blue" }} /></StyledTableCell>
+                        <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
                         <StyledTableCell align="right"><DeleteOutlineOutlinedIcon sx={{ color: "red" }} /></StyledTableCell>
                     </StyledTableRow>
                     {/* ))} */}
