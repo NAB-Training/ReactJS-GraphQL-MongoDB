@@ -20,6 +20,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 const Input = styled('input')({
     display: 'none',
 });
@@ -52,7 +55,6 @@ export default function TableStudent() {
     const [schoolSelect, setSchoolSelect] = React.useState('');
     const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
-
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -62,6 +64,43 @@ export default function TableStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
+    const deleteStudent = (event) => {
+        // toast.success(`Active account successfully !!!`, {
+        //     position: 'top-center',
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        // });       
+        Swal.fire({
+            title: 'Delete Student?',
+            text: "Do you want to permanently delete this student?",
+            icon: "warning",
+            marginTop: "200px",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText: "Cancel",
+            confirmButtonText: "Delete",
+          }).then((result) => {
+            if (result.isConfirmed) {
+                onDeleteStudent();
+            }
+          });
+    }
+    const onDeleteStudent=()=>{
+        toast.error(`You are not admin!!!`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+    }
     return (
         <TableContainer component={Paper}>
             <Modal
@@ -287,7 +326,7 @@ export default function TableStudent() {
                         <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>a</StyledTableCell>
                         <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>teacher</StyledTableCell>
                         <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
-                        <StyledTableCell align="right"><DeleteOutlineOutlinedIcon sx={{ color: "red" }} /></StyledTableCell>
+                        <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event)=>deleteStudent(event)} sx={{ color: "red" }} /></StyledTableCell>
                     </StyledTableRow>
                     {/* ))} */}
                 </TableBody>
