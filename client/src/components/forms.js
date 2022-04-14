@@ -34,7 +34,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default function TableStudent() {
+export default function FormStudent() {
     const [openTeacher, setOpenTeacher] = React.useState(false);
     const [openSchool, setOpenSchool] = React.useState(false)
     const handleOpenTeacherDetail = () => setOpenTeacher(!openTeacher);
