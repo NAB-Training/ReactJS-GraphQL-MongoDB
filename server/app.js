@@ -1,12 +1,14 @@
 const express =require('express')
 const mongoose=require('mongoose')
 const {ApolloServer}=require('apollo-server-express')
-
+const typeDefs=require('./schema/schema')
+const resolvers=require('./resolver/resolver')
+const methods=require('./data/database')
 
 const server= new ApolloServer({
     typeDefs,
     resolvers,
-    // context:()=>({getMethods})
+    context:()=>({methods})
 })
 //Connect to MongoDB
 
@@ -23,7 +25,7 @@ const connect=async()=>{
 }
 
 connect()
-
+const app = express();
 
 server.start().then(res => {
     server.applyMiddleware({ app });

@@ -9,4 +9,4 @@ const SchoolSchema=new Schema({
         type:String
     }
 })
-module.exports=mongooes.model('schools',SchoolSchema)
+module.exports=mongoose.model('schools',SchoolSchema)
