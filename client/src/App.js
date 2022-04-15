@@ -10,7 +10,7 @@ function App() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Box sx={{ bgcolor: 'black', bgcolor: '#cfe8fc', height: 'lg' }}>
+            <Box sx={{ bgcolor: 'black', backgroundColor: '#cfe8fc', height: 'lg' }}>
                 <Container sx={{ paddingTop: 50, padding: 20 }}>
                     <FormSchool />
                     <FormTeacher />
