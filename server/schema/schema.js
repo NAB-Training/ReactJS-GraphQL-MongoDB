@@ -6,7 +6,7 @@ type School{
     name:String
     address:String
     teachers:[Teacher]
-    student:[Student]
+    students:[Student]
 }
 type Teacher{
     id:ID
@@ -36,7 +36,9 @@ type Query{
 type Mutation{
     createSchool(name:String,address:String):School
     createTeacher(name:String,age:Int,gender:String,schoolId:String):Teacher
-    createStudent(name:String,age:Int,gender:String,image:String,schoolId:String,teacherId:String,):Student
+    createStudent(name:String,age:Int,gender:String,image:String,schoolId:String,teacherId:String,):Student,
+    deleteStudent(id:ID!):{Boolean,Student}
+
 }
 `
 
