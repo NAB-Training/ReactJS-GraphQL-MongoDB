@@ -21,6 +21,10 @@ const methods={
         const newStudent=new Student(args)
         return await newStudent.save()
     },
-    deleteStudent:async id=>await Student.findByIdAndDelete(id)
+    deleteStudent:async id=>await Student.findByIdAndDelete(id),
+    deleteTeacher:async id=>{
+        await Teacher.findByIdAndDelete(id)
+        await Student.remove({teacherId:id})
+    }
 }
 module.exports=methods

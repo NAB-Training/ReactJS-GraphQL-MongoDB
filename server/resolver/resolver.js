@@ -26,6 +26,7 @@ const resolvers={
         createTeacher:async(parents,args,{methods})=>await methods.createTeacher(args),
         createStudent:async(parents,args,{methods})=>await methods.createStudent(args),
         deleteStudent:async(parents,{id},{methods})=>await methods.deleteStudent(id),
+        deleteTeacher:async(parents,{id},{methods})=>await methods.deleteTeacher(id),
     },
 }
 module.exports=resolvers
