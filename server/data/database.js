@@ -19,5 +19,4 @@ const methods={
         return await newStudent.save()
     }
 }
-
 module.exports=methods
