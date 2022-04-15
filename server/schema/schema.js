@@ -37,7 +37,7 @@ type Mutation{
     createSchool(name:String,address:String):School
     createTeacher(name:String,age:Int,gender:String,schoolId:String):Teacher
     createStudent(name:String,age:Int,gender:String,image:String,schoolId:String,teacherId:String,):Student,
-    deleteStudent(id:ID!):{Boolean,Student}
+    deleteStudent(id:String):Student
 
 }
 `
