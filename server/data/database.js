@@ -12,6 +12,10 @@ const methods={
     createTeacher:async args=>{
         const newTeacher=new Teacher(args)
         return await newTeacher.save()
+    },
+    createStudent:async args=>{
+        const newStudent=new Student(args)
+        return await newStudent.save()
     }
 }
 
