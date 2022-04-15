@@ -1,6 +1,6 @@
 import {gql} from "@apollo/client"
 
-const createSchool=gql`
+const createSchoolMutation=gql`
 mutation createSchool(
     $name:String
     $address:String
@@ -12,3 +12,5 @@ mutation createSchool(
     }
 }
 `
+
+export {createSchoolMutation}
