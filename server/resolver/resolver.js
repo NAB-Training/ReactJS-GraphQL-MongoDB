@@ -4,7 +4,7 @@ const resolvers={
     Query:{
         // getAllStudents:async(parent,args,{methods})=>await methods.getAllStudents(),
         // getAllTeachers:async(parent,args,{methods})=>await methods.getAllTeachers(),
-        getAllSchools:async(parent,args,{methods})=>await methods.getAllSchools(),
+        schools:async(parent,args,{methods})=>await methods.getAllSchools(),
         // getOneStudent:async(parent,{id},{methods})=>await methods.getOneStudent(id),
         // getOneTeacher:async(parent,{id},methods)=>await methods.getOneTeacher(id),
         // getOneSchool:async(parent,{id},{methods})=>await methods.getOneSchool(id),

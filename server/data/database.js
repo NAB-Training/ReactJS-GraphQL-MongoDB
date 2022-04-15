@@ -8,6 +8,10 @@ const methods={
     createSchool:async args=>{
         const newSchool=new School(args)
         return await newSchool.save()
+    },
+    createTeacher:async args=>{
+        const newTeacher=new Teacher(args)
+        return await newTeacher.save()
     }
 }
 
