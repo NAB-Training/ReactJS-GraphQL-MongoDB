@@ -30,6 +30,10 @@ const methods={
         await Student.remove({schoolId:id})
         await Teacher.remove({schoolId:id})
         await School.findByIdAndDelete(id)
+    },
+    updateSchool:async args=>{
+        await School.findByIdAndUpdate(args.id,args.name?{name:args.name}:null)
+        await School.findByIdAndUpdate(args.id,args.address?{address:args.address}:null)
     }
 }
 module.exports=methods
