@@ -23,8 +23,13 @@ const methods={
     },
     deleteStudent:async id=>await Student.findByIdAndDelete(id),
     deleteTeacher:async id=>{
-        await Teacher.findByIdAndDelete(id)
         await Student.remove({teacherId:id})
+        await Teacher.findByIdAndDelete(id)
+    },
+    deleteSchool:async id=>{
+        await Student.remove({schoolId:id})
+        await Teacher.remove({schoolId:id})
+        await School.findByIdAndDelete(id)
     }
 }
 module.exports=methods
