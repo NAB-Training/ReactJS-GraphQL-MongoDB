@@ -6,6 +6,8 @@ const resolvers={
         teachers:async(parents,args,{methods})=>await methods.getAllTeachers(),
         schools:async(parents,args,{methods})=>await methods.getAllSchools(),
         student:async(parent,{id},{methods})=>await methods.getOneStudent(id),
+        teacher:async(parent,{id},{methods})=>await methods.getOneTeacher(id),
+        school:async(parent,{id},{methods})=>await methods.getOneSchool(id),
     },
     
     Mutation:{

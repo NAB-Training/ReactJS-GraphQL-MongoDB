@@ -8,6 +8,7 @@ const methods={
     getAllTeachers:async(condition=null)=>condition==null?await Teacher.find():await Teacher.find(condition),
     getOneStudent:async id =>await Student.findById(id),
     getOneTeacher:async id=>await Teacher.findById(id),
+    getOneSchool:async id=>await School.findById(id),
     createSchool:async args=>{
         const newSchool=new School(args)
         return await newSchool.save()
