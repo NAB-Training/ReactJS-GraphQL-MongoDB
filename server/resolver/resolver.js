@@ -5,7 +5,10 @@ const School = require('../model/school')
 
 const resolvers={
     Query:{
-        students:async(parents,args,{methods})=>await methods.getAllStudents()
+        students:async(parents,args,{methods})=>await methods.getAllStudents(),
+    },
+    Mutation:{
+        createSchool:async(parent,args,{methods})=>await methods.createSchool(args),
     }
 }
 module.exports=resolvers
