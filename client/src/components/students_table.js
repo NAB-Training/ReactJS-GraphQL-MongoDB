@@ -24,6 +24,8 @@ import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
+import {useQuery} from "@apollo/client"
+import { getAllStudents } from '../graphql_client/queries';
 
 const Input = styled('input')({
     display: 'none',
@@ -47,6 +49,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+
+
+
 export default function TableStudent() {
     const [openTeacher, setOpenTeacher] = React.useState(false);
     const [openSchool, setOpenSchool] = React.useState(false)
@@ -66,6 +71,9 @@ export default function TableStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
+    const {loading,error,data}=useQuery(getAllStudents)
+    if (loading) return <p>Loading books....</p>
+	if (error) return <p>Error loading books!</p>
     const deleteStudent = (event) => {
         // toast.success(`Active account successfully !!!`, {
         //     position: 'top-center',
@@ -316,21 +324,23 @@ export default function TableStudent() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {rows.map((row) => ( */}
+                {
+                data.students.length?
+                data.students.map((row,index) => ( 
                     <StyledTableRow>
                         <StyledTableCell component="th" scope="row">
-                            a
+                            {index}
                         </StyledTableCell>
-                        <StyledTableCell align="right">a</StyledTableCell>
+                        <StyledTableCell align="right">{row.name?row.name:null}</StyledTableCell>
                         <StyledTableCell align="right"><Avatar  sx={{marginLeft:"auto",width: 60, height: 60}} alt="Remy Sharp" src="assets/images/user.jpg" /></StyledTableCell>
-                        <StyledTableCell align="right">a</StyledTableCell>
-                        <StyledTableCell align="right">a</StyledTableCell>
-                        <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>a</StyledTableCell>
-                        <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>teacher</StyledTableCell>
+                        <StyledTableCell align="right">{row.age?row.age:null}</StyledTableCell>
+                        <StyledTableCell align="right">{row.gender?row.gender:null}</StyledTableCell>
+                        <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>{row.shool.name?row.shool.name:null}</StyledTableCell>
+                        <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>{row.teacher.name?row.teacher.name:null}</StyledTableCell>
                         <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
                         <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event)=>deleteStudent(event)} sx={{ color: "red" }} /></StyledTableCell>
                     </StyledTableRow>
-                    {/* ))} */}
+                 )):null} 
                 </TableBody>
             </Table>
         </TableContainer>
