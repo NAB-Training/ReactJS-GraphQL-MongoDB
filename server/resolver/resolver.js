@@ -18,7 +18,8 @@ const resolvers={
         students:async({id},args,{methods})=>await methods.getAllStudents({teacherId:id})
     },
     Student:{
-        school:async({schoolId},args,{methods})=>await methods.getOneSchool(schoolId)
+        school:async({schoolId},args,{methods})=>await methods.getOneSchool(schoolId),
+        teacher:async({teacherId},args,{methods})=>await methods.getOneTeacher(teacherId)
     },
     Mutation:{
         createSchool:async(parents,args,{methods})=>await methods.createSchool(args),
