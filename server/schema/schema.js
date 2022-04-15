@@ -6,7 +6,7 @@ type School{
     name:String
     address:String
     teachers:[Teacher]
-    student:[Student]
+    students:[Student]
 }
 type Teacher{
     id:ID
