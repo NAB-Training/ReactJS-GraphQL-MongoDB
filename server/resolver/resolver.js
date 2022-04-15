@@ -1,14 +1,20 @@
 const { argsToArgsConfig } = require('graphql/type/definition')
-const Student=require('../model/student');
-const Teacher=require('../model/teacher')
-const School = require('../model/school')
 
 const resolvers={
     Query:{
-        students:async(parents,args,{methods})=>await methods.getAllStudents(),
+        // getAllStudents:async(parent,args,{methods})=>await methods.getAllStudents(),
+        // getAllTeachers:async(parent,args,{methods})=>await methods.getAllTeachers(),
+        getAllSchools:async(parent,args,{methods})=>await methods.getAllSchools(),
+        // getOneStudent:async(parent,{id},{methods})=>await methods.getOneStudent(id),
+        // getOneTeacher:async(parent,{id},methods)=>await methods.getOneTeacher(id),
+        // getOneSchool:async(parent,{id},{methods})=>await methods.getOneSchool(id),
+
     },
+    
     Mutation:{
         createSchool:async(parent,args,{methods})=>await methods.createSchool(args),
+        createTeacher:async(parent,args,{methods})=>await methods.createTeacher(args),
+        createStudent:async(parent,args,{methods})=>await methods.createStudent(args)
     }
 }
 module.exports=resolvers
