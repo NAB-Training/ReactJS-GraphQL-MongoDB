@@ -9,7 +9,9 @@ const resolvers={
         teacher:async(parent,{id},{methods})=>await methods.getOneTeacher(id),
         school:async(parent,{id},{methods})=>await methods.getOneSchool(id),
     },
-    
+    School:{
+        teachers:async({id},args,{methods})=>await methods.getAllTeachers({schoolId:id}),
+    },
     Mutation:{
         createSchool:async(parents,args,{methods})=>await methods.createSchool(args),
         createTeacher:async(parents,args,{methods})=>await methods.createTeacher(args),
