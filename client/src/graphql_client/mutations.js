@@ -12,5 +12,27 @@ mutation createSchool(
     }
 }
 `
-
-export {createSchoolMutation}
+const createTeacherMutation=gql`
+mutation createTeacher(
+    $name:String
+    $age:Int
+    $gender:String
+    $schoolId:String
+){
+    createTeacher(name:$name,age:$age,gender:$gender,schoolId:$schoolId){
+        id 
+        name
+        gender
+        age
+        school{
+            id
+            name
+            address
+        }
+    }
+}
+`
+export {
+    createSchoolMutation,
+    createTeacherMutation
+}

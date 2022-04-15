@@ -71,7 +71,7 @@ const getAllStudents=gql`
      }
  }
  `
-//const getOneSchool=gql`
+// const getOneStudent=gql`
 // query getOneSchoolQuery($id:ID!){
 //     school(id:$id){
 //         id
@@ -101,9 +101,26 @@ const getAllStudents=gql`
 //     }
 // }
 // `
-
+const getAllTeachers=gql`
+query getAllTeacherQuery{
+    teacher{
+        id
+        name
+        gender
+        age
+        students{
+            id
+            name
+            age
+            gender
+            image
+        }
+    }
+}
+`
 export {
     getAllStudents,
     getAllSchools,
-    getOneSchool
+    getOneSchool,
+    getAllTeachers,
 }
