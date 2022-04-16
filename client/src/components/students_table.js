@@ -39,7 +39,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         backgroundColor: "#3d5afe",
         color: theme.palette.common.white,
         fontWeight: "bold"
-    }, 
+    },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
     },
@@ -75,30 +75,30 @@ export default function TableStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
-    const handleOpenTeacherDetail = (event,object) => {
+    const handleOpenTeacherDetail = (event, object) => {
         setOpenTeacher(!openTeacher);
         setTeacherDetail(object);
     }
-    const handleOpenSchoolDetail = (event,object) => {
+    const handleOpenSchoolDetail = (event, object) => {
         setOpenSchool(!openSchool);
         setSchoolDetail(object);
     }
-    const handleOpenEditStudent = (event,object) => {
+    const handleOpenEditStudent = (event, object) => {
         console.log(object)
         setOpenEdit(!openEdit);
         setEdit(object);
     }
-    const [student,setStudent]=React.useState({
-        name:"",
-        age:"",
-        gender:"",
-        image:"",
+    const [student, setStudent] = React.useState({
+        name: "",
+        age: "",
+        gender: "",
+        image: "",
     });
-    const onSubmit=(event)=>{
+    const onSubmit = (event) => {
         event.preventDefault();
         updateStudent({
-            variables:{id:edit.id,image:"http://localhost:3000/assets/images/user.jpg",gender:genderSelect,name:student.name,age:parseInt(student.age),teacherId:teacherSelect,schoolId:schoolSelect},
-            refetchQueries:[{queries:getAllStudents}]
+            variables: { id: edit.id, image: "http://localhost:3000/assets/images/user.jpg", gender: genderSelect, name: student.name, age: parseInt(student.age), teacherId: teacherSelect, schoolId: schoolSelect },
+            refetchQueries: [{ queries: getAllStudents }]
         })
         Swal.fire({
             title: 'Update Successfully?',
@@ -108,7 +108,7 @@ export default function TableStudent() {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Cancel",
-        });    
+        });
     }
     const [deleteStudent, mutationD] = useMutation(deleteStudentMutation)
     const [updateStudent, mutationR] = useMutation(updateStudentMutation)
@@ -129,13 +129,13 @@ export default function TableStudent() {
             }
         });
     }
-    const handleChangeInput=(event)=>{
-        const target=event.target;
-        const field=target.name;
-        const value=target.value;
+    const handleChangeInput = (event) => {
+        const target = event.target;
+        const field = target.name;
+        const value = target.value;
         setStudent({
             ...student,
-            [field]:value
+            [field]: value
         })
     }
     const onDeleteStudent = (idStudent) => {
@@ -154,8 +154,8 @@ export default function TableStudent() {
         });
     }
     const { loading, error, data } = useQuery(getAllStudents);
-    const {loading:loadingS,error:errorS,data:dataS}=useQuery(getAllSchools)
-    const {loading:loadingT,error:errorT,data:dataT}=useQuery(getAllTeachers)
+    const { loading: loadingS, error: errorS, data: dataS } = useQuery(getAllSchools)
+    const { loading: loadingT, error: errorT, data: dataT } = useQuery(getAllTeachers)
     if (loading) return <p>Loading students....</p>
     if (error) return <p>Error loading students!</p>
     if (loadingS) return <p>Loading schools....</p>
@@ -354,17 +354,17 @@ export default function TableStudent() {
                             }}
                             noValidate
                             autoComplete="off">
-                            <TextField onChange={(event)=>handleChangeInput(event)} name="name" defaultValue={edit.name} id="outlined-basic" label="Name" variant="outlined" />
+                            <TextField onChange={(event) => handleChangeInput(event)} name="name" defaultValue={edit.name} id="outlined-basic" label="Name" variant="outlined" />
                             <label style={{ width: 35 }} htmlFor="icon-button-file">
                                 <Input accept="image/*" id="icon-button-file" type="file" />
                                 <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera sx={{ marginTop: 1 }} />
                                 </IconButton>
                             </label>
-                            <TextField onChange={(event)=>handleChangeInput(event)} name="age" defaultValue={edit.age} id="outlined-basic" type="number" label="Age" variant="outlined" />
+                            <TextField onChange={(event) => handleChangeInput(event)} name="age" defaultValue={edit.age} id="outlined-basic" type="number" label="Age" variant="outlined" />
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">{edit.school?edit.school.name:null}</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.school ? edit.school.name : null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -372,18 +372,18 @@ export default function TableStudent() {
                                         label="School"
                                         onChange={handleChangeSchool}
                                     >
-                                       {
-                                dataS.schools.length?
-                                dataS.schools.map((item,index) => (
-                                    <MenuItem key={index}value={item.id?item.id:null}>{item.name?item.name:null}</MenuItem>
-                                 )):null
-                            }
+                                        {
+                                            dataS.schools.length ?
+                                                dataS.schools.map((item, index) => (
+                                                    <MenuItem key={index} value={item.id ? item.id : null}>{item.name ? item.name : null}</MenuItem>
+                                                )) : null
+                                        }
                                     </Select>
                                 </FormControl>
                             </Box>
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">{edit.teacher?edit.teacher.name:null}</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.teacher ? edit.teacher.name : null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -391,18 +391,18 @@ export default function TableStudent() {
                                         label="Teacher"
                                         onChange={handleChangeTeacher}
                                     >
-                                       {
-                                dataT.teachers.length?
-                                dataT.teachers.map((item,index)=>(
-                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
-                                )):null
-                            }
+                                        {
+                                            dataT.teachers.length ?
+                                                dataT.teachers.map((item, index) => (
+                                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                                                )) : null
+                                        }
                                     </Select>
                                 </FormControl>
                             </Box>
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">{edit.gender?edit.gender:null}</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.gender ? edit.gender : null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -415,7 +415,7 @@ export default function TableStudent() {
                                     </Select>
                                 </FormControl>
                             </Box>
-                            <Button onClick={(event)=>onSubmit(event)} variant="contained">Submit</Button>
+                            <Button onClick={(event) => onSubmit(event)} variant="contained">Submit</Button>
                         </Box>
                     </Box>
                 </Box>
@@ -446,9 +446,9 @@ export default function TableStudent() {
                                     <StyledTableCell align="right"><Avatar sx={{ marginLeft: "auto", width: 60, height: 60 }} alt="Remy Sharp" src={row.image ? row.image : null} /></StyledTableCell>
                                     <StyledTableCell align="right">{row.age ? row.age : null}</StyledTableCell>
                                     <StyledTableCell align="right">{row.gender ? row.gender : null}</StyledTableCell>
-                                    <StyledTableCell align="right" onClick={(event)=>handleOpenSchoolDetail(event,row.school)}>{row.school.name ? row.school.name : null}</StyledTableCell>
-                                    <StyledTableCell align="right" onClick={(event)=>handleOpenTeacherDetail(event,row.teacher)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
-                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={(event)=>handleOpenEditStudent(event,row)} sx={{ color: "blue" }} /></StyledTableCell>
+                                    <StyledTableCell align="right" onClick={(event) => handleOpenSchoolDetail(event, row.school)}>{row.school.name ? row.school.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right" onClick={(event) => handleOpenTeacherDetail(event, row.teacher)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={(event) => handleOpenEditStudent(event, row)} sx={{ color: "blue" }} /></StyledTableCell>
                                     <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event) => handledeleteStudent(event, row.id)} sx={{ color: "red" }} /></StyledTableCell>
                                 </StyledTableRow>
                             )) : null}

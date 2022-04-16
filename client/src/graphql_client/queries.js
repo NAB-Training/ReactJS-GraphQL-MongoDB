@@ -1,6 +1,6 @@
-import {gql} from "@apollo/client"
+import { gql } from "@apollo/client"
 
-const getAllSchools=gql`
+const getAllSchools = gql`
 query getAllSchoolQuery{
     schools{
         id
@@ -19,7 +19,7 @@ query getAllSchoolQuery{
     }
 }
 `
-const getOneSchool=gql`
+const getOneSchool = gql`
 query getOneSchoolQuery($id:ID!){
     school(id:$id){
         id
@@ -49,7 +49,7 @@ query getOneSchoolQuery($id:ID!){
     }
 }
 `
-const getAllStudents=gql`
+const getAllStudents = gql`
  query getAllStudentQuery{
      students{
          id
@@ -75,7 +75,7 @@ const getAllStudents=gql`
      }
  }
  `
-const getOneStudent=gql`
+const getOneStudent = gql`
 query getOneStudentQuery($id:ID!){
     student(id:$id){
         id
@@ -97,7 +97,7 @@ query getOneStudentQuery($id:ID!){
     }
 }
 `
-const getAllTeachers=gql`
+const getAllTeachers = gql`
 query getAllTeacherQuery{
     teachers{
         id
@@ -114,7 +114,7 @@ query getAllTeacherQuery{
     }
 }
 `
-const getOneTeacher=gql`
+const getOneTeacher = gql`
 query getOneTeacherQuery($id:ID!){
     teacher(id:$id){
         id
