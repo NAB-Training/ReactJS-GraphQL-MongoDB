@@ -67,7 +67,7 @@ const FormStudent=()=>{
                             {
                                 data.schools.length?
                                 data.schools.map((item,index) => (
-                                    <MenuItem value={item.id?item.id:null}>{item.name?item.name:null}</MenuItem>
+                                    <MenuItem key={index}value={item.id?item.id:null}>{item.name?item.name:null}</MenuItem>
                                  )):null
                             }
                         </Select>

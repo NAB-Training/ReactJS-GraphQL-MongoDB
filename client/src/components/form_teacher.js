@@ -13,27 +13,51 @@ import Select from '@mui/material/Select';
 import {useQuery} from "@apollo/client"
 import { getAllSchools } from '../graphql_client/queries';
 import { createTeacherMutation } from '../graphql_client/mutations';
-
+import { getAllTeachers } from '../graphql_client/queries';
+import {useMutation} from "@apollo/client"
 const Input = styled('input')({
     display: 'none',
 });
 const FormTeacher=()=>{
     const [schoolSelect, setSchoolSelect] = React.useState('');
-    const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
+    const [teacher,setTeacher]=React.useState({
+        name:"",
+        age:0,
+        schoolId:"",
+        gender:""
+    })
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
-    };
-    const handleChangeTeacher = (event) => {
-        setTeacherSelect(event.target.value);
     };
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
     const {loading,error,data}=useQuery(getAllSchools);
+    console.log(data)
+    const handleChangeInput=(event)=>{
+        const target=event.target;
+        const field=target.name;
+        const value=target.value;
+        setTeacher({
+            ...teacher,
+            [field]:value
+        })
+    }
+    const [createData,mutation]=useMutation(createTeacherMutation)
+    const {name,age}=teacher
+    const onSubmit=(event)=>{
+        event.preventDefault()
+        createData({
+            variables:{name,age:parseInt(age),schoolId:schoolSelect,gender:genderSelect},
+            refetchQueries:[{queries:getAllTeachers}]
+        });
+        setTeacher({name:"",age:""});
+        setSchoolSelect("");
+        setGenderSelect("")
+    }
     if (loading)return<p>Loading data</p>
     if (error)return<p>Error loading data</p>
-    console.log(data)
     return (
         <Box sx={{marginBottom:2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
@@ -47,8 +71,8 @@ const FormTeacher=()=>{
                 }}
                 noValidate
                 autoComplete="off">
-                <TextField id="outlined-basic" label="Name" variant="outlined" />
-                <TextField id="outlined-basic" type="number" label="Age" variant="outlined" />
+                <TextField onChange={(event)=>handleChangeInput(event)} name="name" id="outlined-basic" label="Name" variant="outlined" />
+                <TextField onChange={(event)=>handleChangeInput(event)} name="age" id="outlined-basic" type="number" label="Age" variant="outlined" />
                 <Box>
                     <FormControl sx={{ width: 150 }}>
                         <InputLabel id="demo-simple-select-label">School</InputLabel>
@@ -62,7 +86,7 @@ const FormTeacher=()=>{
                             {
                                 data.schools.length?
                                 data.schools.map((item,index)=>(
-                                    <MenuItem value={item.id}>{item.name}</MenuItem>
+                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
                                 )):null
                             }
                         </Select>
@@ -83,7 +107,7 @@ const FormTeacher=()=>{
                         </Select>
                     </FormControl>
                 </Box>            
-                <Button variant="contained">Submit</Button>
+                <Button onClick={(event)=>onSubmit(event)} variant="contained">Submit</Button>
                 </Box>
         </Box>
     );
