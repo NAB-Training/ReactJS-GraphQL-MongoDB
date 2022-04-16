@@ -26,7 +26,8 @@ import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import {useQuery} from "@apollo/client"
 import { getAllStudents } from '../graphql_client/queries';
-
+import { deleteStudentMutation } from '../graphql_client/mutations';
+import {useMutation} from "@apollo/client"
 const Input = styled('input')({
     display: 'none',
 });
@@ -71,19 +72,8 @@ export default function TableStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
-    const {loading,error,data}=useQuery(getAllStudents)
-    if (loading) return <p>Loading books....</p>
-	if (error) return <p>Error loading books!</p>
-    const deleteStudent = (event) => {
-        // toast.success(`Active account successfully !!!`, {
-        //     position: 'top-center',
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        // });       
+    const [deleteStudent,mutation]=useMutation(deleteStudentMutation)
+    const handledeleteStudent = (event,id) => {     
         Swal.fire({
             title: 'Delete Student?',
             text: "Do you want to permanently delete this student?",
@@ -96,22 +86,29 @@ export default function TableStudent() {
             confirmButtonText: "Delete",
           }).then((result) => {
             if (result.isConfirmed) {
-                onDeleteStudent();
+                onDeleteStudent(id);
             }
           });
     }
-    const onDeleteStudent=()=>{
-        toast.error(`You are not admin!!!`, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+
+    const onDeleteStudent=(idStudent)=>{
+        deleteStudent({
+            variables:{id:idStudent},
+            refetchQueries:[{queries:getAllStudents}]
+        });
+        Swal.fire({
+            title: 'Delete Successfully?',
+            icon: "success",
+            marginTop: "200px",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cancel",
           });
     }
-    console.log(data.students[0].school.name)
+    const {loading,error,data}=useQuery(getAllStudents)
+    if (loading) return <p>Loading students....</p>
+	if (error) return <p>Error loading students!</p>
     return (
         <TableContainer component={Paper}>
             <Modal
@@ -339,7 +336,7 @@ export default function TableStudent() {
                         <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>{row.school.name?row.school.name:null}</StyledTableCell>
                         <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>{row.teacher.name?row.teacher.name:null}</StyledTableCell> 
                         <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
-                        <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event)=>deleteStudent(event)} sx={{ color: "red" }} /></StyledTableCell>
+                        <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event)=>handledeleteStudent(event,row.id)} sx={{ color: "red" }} /></StyledTableCell>
                     </StyledTableRow>
                  )):null} 
                 </TableBody>
