@@ -1,6 +1,6 @@
-import {gql} from "@apollo/client"
+import { gql } from "@apollo/client"
 
-const createSchoolMutation=gql`
+const createSchoolMutation = gql`
 mutation createSchool(
     $name:String
     $address:String
@@ -12,7 +12,7 @@ mutation createSchool(
     }
 }
 `
-const deleteStudentMutation=gql`
+const deleteStudentMutation = gql`
 mutation deleteStudent(
     $id:String
 ){
@@ -37,7 +37,7 @@ mutation deleteStudent(
 }
 `
 
-const createTeacherMutation=gql`
+const createTeacherMutation = gql`
 mutation createTeacher(
     $name:String
     $age:Int
@@ -57,7 +57,7 @@ mutation createTeacher(
     }
 }
 `
-const createStudentMutation=gql`
+const createStudentMutation = gql`
 mutation createStudent(
     $name:String
     $age:Int
@@ -86,7 +86,7 @@ mutation createStudent(
     }
 }
 `
-const updateStudentMutation=gql`
+const updateStudentMutation = gql`
 mutation updateStudent(
     $id:String
     $name:String

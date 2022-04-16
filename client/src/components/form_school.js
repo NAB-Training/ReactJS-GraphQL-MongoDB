@@ -26,10 +26,10 @@ export default function FormSchool() {
     const onCreateSchool = (event) => {
         event.preventDefault()
         create({
-			variables: { name, address },
-			refetchQueries: [{ query: getAllSchools }]
-		})
-		setSchool({ name: '', address: '' })        
+            variables: { name, address },
+            refetchQueries: [{ query: getAllSchools }]
+        })
+        setSchool({ name: '', address: '' })
         Swal.fire({
             title: 'Create Successfully?',
             icon: "success",
@@ -38,7 +38,7 @@ export default function FormSchool() {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Cancel",
-        });    
+        });
     }
     return (
         <Box sx={{ marginBottom: 2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
