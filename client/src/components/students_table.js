@@ -24,9 +24,10 @@ import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
-import {useQuery} from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { getAllStudents } from '../graphql_client/queries';
-
+import { deleteStudentMutation } from '../graphql_client/mutations';
+import { useMutation } from "@apollo/client"
 const Input = styled('input')({
     display: 'none',
 });
@@ -71,19 +72,8 @@ export default function TableStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
-    const {loading,error,data}=useQuery(getAllStudents)
-    if (loading) return <p>Loading books....</p>
-	if (error) return <p>Error loading books!</p>
-    const deleteStudent = (event) => {
-        // toast.success(`Active account successfully !!!`, {
-        //     position: 'top-center',
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        // });       
+    const [deleteStudent, mutation] = useMutation(deleteStudentMutation)
+    const handledeleteStudent = (event, id) => {
         Swal.fire({
             title: 'Delete Student?',
             text: "Do you want to permanently delete this student?",
@@ -94,24 +84,31 @@ export default function TableStudent() {
             cancelButtonColor: "#d33",
             cancelButtonText: "Cancel",
             confirmButtonText: "Delete",
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                onDeleteStudent();
+                onDeleteStudent(id);
             }
-          });
+        });
     }
-    const onDeleteStudent=()=>{
-        toast.error(`You are not admin!!!`, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+
+    const onDeleteStudent = (idStudent) => {
+        deleteStudent({
+            variables: { id: idStudent },
+            refetchQueries: [{ queries: getAllStudents }]
+        });
+        Swal.fire({
+            title: 'Delete Successfully?',
+            icon: "success",
+            marginTop: "200px",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cancel",
+        });
     }
-    console.log(data.students[0].school.name)
+    const { loading, error, data } = useQuery(getAllStudents)
+    if (loading) return <p>Loading students....</p>
+    if (error) return <p>Error loading students!</p>
     return (
         <TableContainer component={Paper}>
             <Modal
@@ -131,35 +128,35 @@ export default function TableStudent() {
                     boxShadow: 24,
                     p: 4,
                 }}>
-                    <Typography 
-                        id="modal-modal-title" 
-                        variant="h6" 
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
                         component="h2"
                         sx={{
-                            textAlign:"center",
-                            fontWeight:"bold",
-                            marginBottom:3
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            marginBottom: 3
                         }}
-                        >
+                    >
                         Teacher Details
                     </Typography>
-                    <Box sx={{display:"flex"}}>
-                    <Typography 
-                        id="modal-modal-description" 
-                        sx={{
-                            fontSize:16,
-                            fontWeight:"bold",
-                        }}>
-                        Name
-                    </Typography>
-                    <Typography 
-                        id="modal-modal-description" 
-                        sx={{
-                            fontSize:16,
-                            marginLeft:5
-                        }}>
-                        Hà Mộng Khang
-                    </Typography>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                fontWeight: "bold",
+                            }}>
+                            Name
+                        </Typography>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                marginLeft: 5
+                            }}>
+                            Hà Mộng Khang
+                        </Typography>
                     </Box>
                 </Box>
             </Modal>
@@ -180,35 +177,35 @@ export default function TableStudent() {
                     boxShadow: 24,
                     p: 4,
                 }}>
-                    <Typography 
-                        id="modal-modal-title" 
-                        variant="h6" 
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
                         component="h2"
                         sx={{
-                            textAlign:"center",
-                            fontWeight:"bold",
-                            marginBottom:3
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            marginBottom: 3
                         }}
-                        >
+                    >
                         School Details
                     </Typography>
-                    <Box sx={{display:"flex"}}>
-                    <Typography 
-                        id="modal-modal-description" 
-                        sx={{
-                            fontSize:16,
-                            fontWeight:"bold",
-                        }}>
-                        Name
-                    </Typography>
-                    <Typography 
-                        id="modal-modal-description" 
-                        sx={{
-                            fontSize:16,
-                            marginLeft:5
-                        }}>
-                        Hà Mộng Khang
-                    </Typography>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                fontWeight: "bold",
+                            }}>
+                            Name
+                        </Typography>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                marginLeft: 5
+                            }}>
+                            Hà Mộng Khang
+                        </Typography>
                     </Box>
                 </Box>
             </Modal>
@@ -229,85 +226,85 @@ export default function TableStudent() {
                     boxShadow: 24,
                     p: 4,
                 }}>
-                    <Typography 
-                        id="modal-modal-title" 
-                        variant="h6" 
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
                         component="h2"
                         sx={{
-                            textAlign:"center",
-                            fontWeight:"bold",
-                            marginBottom:3
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            marginBottom: 3
                         }}
-                        >
+                    >
                         Student Edit
                     </Typography>
-                    <Box sx={{ marginBottom:2,backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
-           <Box
-                component="form"
-                sx={{
-                    display: "flex",
-                    '& > :not(style)': { m: 1, width: '25ch' },
-                }}
-                noValidate
-                autoComplete="off">
-                <TextField id="outlined-basic" label="Name" variant="outlined" />
-                <label style={{ width: 35 }} htmlFor="icon-button-file">
-                    <Input accept="image/*" id="icon-button-file" type="file" />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
-                        <PhotoCamera sx={{ marginTop: 1 }} />
-                    </IconButton>
-                </label>
-                <TextField id="outlined-basic" type="number" label="Age" variant="outlined" />
-                <Box>
-                    <FormControl sx={{ width: 150 }}>
-                        <InputLabel id="demo-simple-select-label">School</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={schoolSelect}
-                            label="School"
-                            onChange={handleChangeSchool}
-                        >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>        
-                <Box>
-                    <FormControl sx={{ width: 150 }}>
-                        <InputLabel id="demo-simple-select-label">Teacher</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={teacherSelect}
-                            label="Teacher"
-                            onChange={handleChangeTeacher}
-                        >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-                <Box>
-                    <FormControl sx={{ width: 150 }}>
-                        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={genderSelect}
-                            label="Gender"
-                            onChange={handleChangeGender}
-                        >
-                            <MenuItem value="male">Male</MenuItem>
-                            <MenuItem value="female">Female</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>            
-                <Button variant="contained">Submit</Button>
-                </Box>
-        </Box>
+                    <Box sx={{ marginBottom: 2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
+                        <Box
+                            component="form"
+                            sx={{
+                                display: "flex",
+                                '& > :not(style)': { m: 1, width: '25ch' },
+                            }}
+                            noValidate
+                            autoComplete="off">
+                            <TextField id="outlined-basic" label="Name" variant="outlined" />
+                            <label style={{ width: 35 }} htmlFor="icon-button-file">
+                                <Input accept="image/*" id="icon-button-file" type="file" />
+                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <PhotoCamera sx={{ marginTop: 1 }} />
+                                </IconButton>
+                            </label>
+                            <TextField id="outlined-basic" type="number" label="Age" variant="outlined" />
+                            <Box>
+                                <FormControl sx={{ width: 150 }}>
+                                    <InputLabel id="demo-simple-select-label">School</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={schoolSelect}
+                                        label="School"
+                                        onChange={handleChangeSchool}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <FormControl sx={{ width: 150 }}>
+                                    <InputLabel id="demo-simple-select-label">Teacher</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={teacherSelect}
+                                        label="Teacher"
+                                        onChange={handleChangeTeacher}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <FormControl sx={{ width: 150 }}>
+                                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={genderSelect}
+                                        label="Gender"
+                                        onChange={handleChangeGender}
+                                    >
+                                        <MenuItem value="male">Male</MenuItem>
+                                        <MenuItem value="female">Female</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Button variant="contained">Submit</Button>
+                        </Box>
+                    </Box>
                 </Box>
             </Modal>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -325,23 +322,23 @@ export default function TableStudent() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {
-                data.students.length?
-                data.students.map((row,index) => ( 
-                    <StyledTableRow key={index}>
-                        <StyledTableCell component="th" scope="row">
-                            {index}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">{row.name?row.name:null}</StyledTableCell>
-                        <StyledTableCell align="right"><Avatar  sx={{marginLeft:"auto",width: 60, height: 60}} alt="Remy Sharp" src={row.image?row.image:null} /></StyledTableCell>
-                        <StyledTableCell align="right">{row.age?row.age:null}</StyledTableCell>
-                        <StyledTableCell align="right">{row.gender?row.gender:null}</StyledTableCell>
-                        <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>{row.school.name?row.school.name:null}</StyledTableCell>
-                        <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>{row.teacher.name?row.teacher.name:null}</StyledTableCell> 
-                        <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
-                        <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event)=>deleteStudent(event)} sx={{ color: "red" }} /></StyledTableCell>
-                    </StyledTableRow>
-                 )):null} 
+                    {
+                        data.students.length ?
+                            data.students.map((row, index) => (
+                                <StyledTableRow key={index}>
+                                    <StyledTableCell component="th" scope="row">
+                                        {index}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">{row.name ? row.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right"><Avatar sx={{ marginLeft: "auto", width: 60, height: 60 }} alt="Remy Sharp" src={row.image ? row.image : null} /></StyledTableCell>
+                                    <StyledTableCell align="right">{row.age ? row.age : null}</StyledTableCell>
+                                    <StyledTableCell align="right">{row.gender ? row.gender : null}</StyledTableCell>
+                                    <StyledTableCell align="right" onClick={(event)=>handleOpenSchoolDetail(event,row.school.id)}>{row.school.name ? row.school.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right" onClick={(event)=>handleOpenTeacherDetail(event,teacher.school.id)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
+                                    <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event) => handledeleteStudent(event, row.id)} sx={{ color: "red" }} /></StyledTableCell>
+                                </StyledTableRow>
+                            )) : null}
                 </TableBody>
             </Table>
         </TableContainer>

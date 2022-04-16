@@ -12,6 +12,31 @@ mutation createSchool(
     }
 }
 `
+const deleteStudentMutation=gql`
+mutation deleteStudent(
+    $id:String
+){
+    deleteStudent(id:$id){
+        id
+        name
+        age
+        image
+        gender
+        school{
+           id
+           name
+           address
+        }
+        teacher{
+            id
+            name
+            age
+            gender
+        }
+    }
+}
+`
+
 const createTeacherMutation=gql`
 mutation createTeacher(
     $name:String
@@ -65,4 +90,5 @@ export {
     createSchoolMutation,
     createTeacherMutation,
     createStudentMutation,
+    deleteStudentMutation,
 }
