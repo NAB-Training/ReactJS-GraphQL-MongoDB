@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -10,14 +10,16 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import {useQuery} from "@apollo/client"
+import { getAllSchools } from '../graphql_client/queries';
+
 const Input = styled('input')({
     display: 'none',
 });
-export default function FormStudent() {
+const FormStudent=()=>{
     const [schoolSelect, setSchoolSelect] = React.useState('');
     const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
-
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -27,6 +29,10 @@ export default function FormStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
+    const {loading,error,data}=useQuery(getAllSchools);
+    console.log(data)
+    if (loading) return <p>Loading books....</p>
+	if (error) return <p>Error loading books!</p>
     return (
         <Box sx={{ marginBottom:2,backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
@@ -58,9 +64,12 @@ export default function FormStudent() {
                             label="School"
                             onChange={handleChangeSchool}
                         >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            {
+                                data.schools.length?
+                                data.schools.map((item,index) => (
+                                    <MenuItem key={index}value={item.id?item.id:null}>{item.name?item.name:null}</MenuItem>
+                                 )):null
+                            }
                         </Select>
                     </FormControl>
                 </Box>        
@@ -100,3 +109,4 @@ export default function FormStudent() {
         </Box>
     );
 }
+export default FormStudent;
