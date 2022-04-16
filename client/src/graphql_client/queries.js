@@ -95,7 +95,7 @@ query getOneStudentQuery($id:ID!){
 `
 const getAllTeachers=gql`
 query getAllTeacherQuery{
-    teacher{
+    teachers{
         id
         name
         gender

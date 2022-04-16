@@ -12,7 +12,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {useQuery} from "@apollo/client"
 import { getAllSchools } from '../graphql_client/queries';
-
+import { getAllStudents } from '../graphql_client/queries';
+import { createStudentMutation } from '../graphql_client/mutations';
+import{useMutation} from "@apollo/client";
+import { getAllTeachers } from '../graphql_client/queries';
 const Input = styled('input')({
     display: 'none',
 });
@@ -20,6 +23,12 @@ const FormStudent=()=>{
     const [schoolSelect, setSchoolSelect] = React.useState('');
     const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
+    const [student,setStudent]=React.useState({
+        name:"",
+        age:"",
+        gender:"",
+        image:"",
+    })
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -29,10 +38,13 @@ const FormStudent=()=>{
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
-    const {loading,error,data}=useQuery(getAllSchools);
-    console.log(data)
-    if (loading) return <p>Loading books....</p>
-	if (error) return <p>Error loading books!</p>
+   // const {loading:loadingSchool,error:errorSchool,data:dataShool}=useQuery(getAllSchools);
+    const {loading:loadingTeacher,error:errorTeacher,data:dataTeacher}=useQuery(getAllTeachers);
+    // if (loadingSchool) return <p>Loading schools....</p>
+	// if (errorSchool) return <p>Error loading schools!</p>
+    // if (loadingTeacher) return <p>Loading teachers....</p>
+	// if (errorTeacher) return <p>Error loading teachers!</p>
+    console.log(dataTeacher)
     return (
         <Box sx={{ marginBottom:2,backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
@@ -64,12 +76,12 @@ const FormStudent=()=>{
                             label="School"
                             onChange={handleChangeSchool}
                         >
-                            {
-                                data.schools.length?
-                                data.schools.map((item,index) => (
+                            {/* {
+                                dataSchool.schools.length?
+                                dataSchool.schools.map((item,index) => (
                                     <MenuItem key={index}value={item.id?item.id:null}>{item.name?item.name:null}</MenuItem>
                                  )):null
-                            }
+                            } */}
                         </Select>
                     </FormControl>
                 </Box>        
