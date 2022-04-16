@@ -111,6 +111,7 @@ export default function TableStudent() {
             progress: undefined,
           });
     }
+    console.log(data)
     return (
         <TableContainer component={Paper}>
             <Modal
@@ -332,11 +333,11 @@ export default function TableStudent() {
                             {index}
                         </StyledTableCell>
                         <StyledTableCell align="right">{row.name?row.name:null}</StyledTableCell>
-                        <StyledTableCell align="right"><Avatar  sx={{marginLeft:"auto",width: 60, height: 60}} alt="Remy Sharp" src="assets/images/user.jpg" /></StyledTableCell>
+                        <StyledTableCell align="right"><Avatar  sx={{marginLeft:"auto",width: 60, height: 60}} alt="Remy Sharp" src={row.image?row.image:null} /></StyledTableCell>
                         <StyledTableCell align="right">{row.age?row.age:null}</StyledTableCell>
-                        <StyledTableCell align="right">{row.gender?row.gender:null}</StyledTableCell>
+                        {/* <StyledTableCell align="right">{row.gender?row.gender:null}</StyledTableCell>
                         <StyledTableCell align="right" onClick={handleOpenSchoolDetail}>{row.shool.name?row.shool.name:null}</StyledTableCell>
-                        <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>{row.teacher.name?row.teacher.name:null}</StyledTableCell>
+                        <StyledTableCell align="right" onClick={handleOpenTeacherDetail}>{row.teacher.name?row.teacher.name:null}</StyledTableCell> */}
                         <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
                         <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event)=>deleteStudent(event)} sx={{ color: "red" }} /></StyledTableCell>
                     </StyledTableRow>
