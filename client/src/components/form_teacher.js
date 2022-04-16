@@ -13,7 +13,7 @@ import Select from '@mui/material/Select';
 const Input = styled('input')({
     display: 'none',
 });
-export default function FormTeacher() {
+const FormTeacher=()=>{
     const [schoolSelect, setSchoolSelect] = React.useState('');
     const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
@@ -78,3 +78,4 @@ export default function FormTeacher() {
         </Box>
     );
 }
+export default FormTeacher;
