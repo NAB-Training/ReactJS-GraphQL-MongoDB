@@ -20,7 +20,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
@@ -40,7 +39,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         backgroundColor: "#3d5afe",
         color: theme.palette.common.white,
         fontWeight: "bold"
-    },
+    }, 
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
     },
@@ -101,6 +100,15 @@ export default function TableStudent() {
             variables:{id:edit.id,image:"http://localhost:3000/assets/images/user.jpg",gender:genderSelect,name:student.name,age:parseInt(student.age),teacherId:teacherSelect,schoolId:schoolSelect},
             refetchQueries:[{queries:getAllStudents}]
         })
+        Swal.fire({
+            title: 'Update Successfully?',
+            icon: "success",
+            marginTop: "200px",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cancel",
+        });    
     }
     const [deleteStudent, mutationD] = useMutation(deleteStudentMutation)
     const [updateStudent, mutationR] = useMutation(updateStudentMutation)

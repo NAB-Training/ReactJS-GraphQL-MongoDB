@@ -44,7 +44,16 @@ const FormStudent=()=>{
         createStudent({
             variables:{image:"http://localhost:3000/assets/images/user.jpg",gender:genderSelect,name:student.name,age:parseInt(student.age),teacherId:teacherSelect,schoolId:schoolSelect},
             refetchQueries:[{queries:getAllStudents}]
-        })
+        });
+        Swal.fire({
+            title: 'Create Successfully?',
+            icon: "success",
+            marginTop: "200px",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cancel",
+        });    
     }
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
