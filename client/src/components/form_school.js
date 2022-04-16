@@ -5,9 +5,32 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
-
+import { useMutation } from "@apollo/client";
+import { getAllSchools } from '../graphql_client/queries';
+import { createSchoolMutation } from '../graphql_client/mutations';
 export default function FormSchool() {
-    const createSchool = (event) => {
+    const [school, setSchool] = React.useState({
+        name: '',
+        address: ""
+    });
+    const { name, address } = school
+    const [create, dataMutation] = useMutation(createSchoolMutation)
+    const handleChangeInput = (event) => {
+        const target = event.target;
+        const field = target.name;
+        const value = target.value;
+        setSchool({
+            ...school,
+            [field]: value,
+        });
+    }
+    const onCreateSchool = (event) => {
+        event.preventDefault()
+        create({
+			variables: { name, address },
+			refetchQueries: [{ query: getAllSchools }]
+		})
+		setSchool({ name: '', address: '' })        
         // toast.error(`You have not been created an account by admin !!!`, {
         //     position: 'top-center',
         //     autoClose: 5000,
@@ -17,30 +40,30 @@ export default function FormSchool() {
         //     draggable: true,
         //     progress: undefined,
         // });
-        // toast.success(`Active account successfully !!!`, {
-        //     position: 'top-center',
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        // });       
-        Swal.fire({
-            title: 'Delete Student?',
-            text: "Do you want to permanently delete this student?",
-            icon: "warning",
-            marginTop: "200px",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            cancelButtonText: "Cancel",
-            confirmButtonText: "Delete",
-          }).then((result) => {
-            if (result.isConfirmed) {
-            //  onDelete(id);
-            }
-          });
+        toast.success(`Active account successfully !!!`, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });       
+        // Swal.fire({
+        //     title: 'Delete Student?',
+        //     text: "Do you want to permanently delete this student?",
+        //     icon: "warning",
+        //     marginTop: "200px",
+        //     showCancelButton: true,
+        //     confirmButtonColor: "#3085d6",
+        //     cancelButtonColor: "#d33",
+        //     cancelButtonText: "Cancel",
+        //     confirmButtonText: "Delete",
+        // }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         //  onDelete(id);
+        //     }
+        // });
     }
     return (
         <Box sx={{ marginBottom: 2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
@@ -55,9 +78,9 @@ export default function FormSchool() {
                 }}
                 noValidate
                 autoComplete="off">
-                <TextField id="outlined-basic" label="Name" variant="outlined" />
-                <TextField id="outlined-basic" label="Address" variant="outlined" />
-                <Button variant="contained" onClick={(event) => createSchool(event)}>Submit</Button>
+                <TextField name="name" onChange={(event) => handleChangeInput(event)} id="outlined-basic" label="Name" variant="outlined" />
+                <TextField name="address" onChange={(event) => handleChangeInput(event)} id="outlined-basic" label="Address" variant="outlined" />
+                <Button variant="contained" onClick={(event) => onCreateSchool(event)}>Submit</Button>
             </Box>
         </Box>
     );
