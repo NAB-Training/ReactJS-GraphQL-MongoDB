@@ -86,9 +86,40 @@ mutation createStudent(
     }
 }
 `
+const updateStudentMutation=gql`
+mutation updateStudent(
+    $id:String
+    $name:String
+    $age:Int
+    $gender:String
+    $schoolId:String
+    $teacherId:String
+    $image:String
+){
+    updateStudent(id:$id,name:$name,age:$age,gender:$gender,schoolId:$schoolId,teacherId:$teacherId,image:$image){
+        id
+        name
+        age
+        image
+        gender
+        school{
+           id
+           name
+           address
+        }
+        teacher{
+            id
+            name
+            age
+            gender
+        }
+    }
+}
+`
 export {
     createSchoolMutation,
     createTeacherMutation,
     createStudentMutation,
     deleteStudentMutation,
+    updateStudentMutation
 }

@@ -40,7 +40,7 @@ type Mutation{
     deleteStudent(id:String):Student
     deleteTeacher(id:String):Teacher
     deleteSchool(id:String):School
-    updateStudent(id:String,name:String,age:Int,gender:String,image:String,schoolId:String,teacherId:String):School
+    updateStudent(id:String,name:String,age:Int,gender:String,image:String,schoolId:String,teacherId:String):Student
 }
 `
 
