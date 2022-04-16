@@ -62,7 +62,7 @@ export default function TableStudent() {
     const [genderSelect, setGenderSelect] = React.useState('');
     const [teacherDetail, setTeacherDetail] = React.useState([]);
     const [schoolDetail, setSchoolDetail] = React.useState([]);
-
+    const [edit, setEdit] = React.useState([]);
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -81,7 +81,11 @@ export default function TableStudent() {
         setOpenSchool(!openSchool);
         setSchoolDetail(object);
     }
-    const handleOpenEditStudent = () => setOpenEdit(!openEdit);
+    const handleOpenEditStudent = (event,object) => {
+        console.log(object)
+        setOpenEdit(!openEdit);
+        setEdit(object);
+    }
     const [deleteStudent, mutation] = useMutation(deleteStudentMutation)
     const handledeleteStudent = (event, id) => {
         Swal.fire({
@@ -311,17 +315,17 @@ export default function TableStudent() {
                             }}
                             noValidate
                             autoComplete="off">
-                            <TextField id="outlined-basic" label="Name" variant="outlined" />
+                            <TextField name="name" value={edit.name} id="outlined-basic" label="Name" variant="outlined" />
                             <label style={{ width: 35 }} htmlFor="icon-button-file">
                                 <Input accept="image/*" id="icon-button-file" type="file" />
                                 <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera sx={{ marginTop: 1 }} />
                                 </IconButton>
                             </label>
-                            <TextField id="outlined-basic" type="number" label="Age" variant="outlined" />
+                            <TextField name="age" value={edit.age} id="outlined-basic" type="number" label="Age" variant="outlined" />
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">School</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.school?edit.school.name:null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -337,7 +341,7 @@ export default function TableStudent() {
                             </Box>
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">Teacher</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.teacher?edit.teacher.name:null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -353,7 +357,7 @@ export default function TableStudent() {
                             </Box>
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.gender?edit.gender:null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -399,7 +403,7 @@ export default function TableStudent() {
                                     <StyledTableCell align="right">{row.gender ? row.gender : null}</StyledTableCell>
                                     <StyledTableCell align="right" onClick={(event)=>handleOpenSchoolDetail(event,row.school)}>{row.school.name ? row.school.name : null}</StyledTableCell>
                                     <StyledTableCell align="right" onClick={(event)=>handleOpenTeacherDetail(event,row.teacher)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
-                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
+                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={(event)=>handleOpenEditStudent(event,row)} sx={{ color: "blue" }} /></StyledTableCell>
                                     <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event) => handledeleteStudent(event, row.id)} sx={{ color: "red" }} /></StyledTableCell>
                                 </StyledTableRow>
                             )) : null}
