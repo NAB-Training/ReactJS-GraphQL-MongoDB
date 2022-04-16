@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Swal from "sweetalert2";
 import { useQuery } from "@apollo/client"
 import { getAllSchools } from '../graphql_client/queries';
 import { createTeacherMutation } from '../graphql_client/mutations';
