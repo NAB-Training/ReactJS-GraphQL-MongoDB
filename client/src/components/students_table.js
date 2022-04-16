@@ -55,14 +55,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function TableStudent() {
     const [openTeacher, setOpenTeacher] = React.useState(false);
-    const [openSchool, setOpenSchool] = React.useState(false)
-    const [openEdit, setOpenEdit] = React.useState(false)
-    const handleOpenTeacherDetail = () => setOpenTeacher(!openTeacher);
-    const handleOpenSchoolDetail = () => setOpenSchool(!openSchool);
-    const handleOpenEditStudent = () => setOpenEdit(!openEdit);
+    const [openSchool, setOpenSchool] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [schoolSelect, setSchoolSelect] = React.useState('');
     const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
+    const [teacherDetail, setTeacherDetail] = React.useState([]);
+    const [schoolDetail, setSchoolDetail] = React.useState([]);
+
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -72,6 +72,16 @@ export default function TableStudent() {
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
+    const handleOpenTeacherDetail = (event,object) => {
+        setOpenTeacher(!openTeacher);
+        setTeacherDetail(object);
+    }
+    const handleOpenSchoolDetail = (event,object) => {
+        console.log(object)
+        setOpenSchool(!openSchool);
+        setSchoolDetail(object);
+    }
+    const handleOpenEditStudent = () => setOpenEdit(!openEdit);
     const [deleteStudent, mutation] = useMutation(deleteStudentMutation)
     const handledeleteStudent = (event, id) => {
         Swal.fire({
@@ -155,7 +165,43 @@ export default function TableStudent() {
                                 fontSize: 16,
                                 marginLeft: 5
                             }}>
-                            Hà Mộng Khang
+                            {teacherDetail.name}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                fontWeight: "bold",
+                            }}>
+                            Age
+                        </Typography>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                marginLeft: 5
+                            }}>
+                            {teacherDetail.age}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                fontWeight: "bold",
+                            }}>
+                            Gender
+                        </Typography>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                marginLeft: 5
+                            }}>
+                            {teacherDetail.gender}
                         </Typography>
                     </Box>
                 </Box>
@@ -204,7 +250,25 @@ export default function TableStudent() {
                                 fontSize: 16,
                                 marginLeft: 5
                             }}>
-                            Hà Mộng Khang
+                            {schoolDetail.name}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                fontWeight: "bold",
+                            }}>
+                            Address
+                        </Typography>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{
+                                fontSize: 16,
+                                marginLeft: 5
+                            }}>
+                            {schoolDetail.address}
                         </Typography>
                     </Box>
                 </Box>
@@ -333,8 +397,8 @@ export default function TableStudent() {
                                     <StyledTableCell align="right"><Avatar sx={{ marginLeft: "auto", width: 60, height: 60 }} alt="Remy Sharp" src={row.image ? row.image : null} /></StyledTableCell>
                                     <StyledTableCell align="right">{row.age ? row.age : null}</StyledTableCell>
                                     <StyledTableCell align="right">{row.gender ? row.gender : null}</StyledTableCell>
-                                    <StyledTableCell align="right" onClick={(event)=>handleOpenSchoolDetail(event,row.school.id)}>{row.school.name ? row.school.name : null}</StyledTableCell>
-                                    <StyledTableCell align="right" onClick={(event)=>handleOpenTeacherDetail(event,teacher.school.id)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right" onClick={(event)=>handleOpenSchoolDetail(event,row.school)}>{row.school.name ? row.school.name : null}</StyledTableCell>
+                                    <StyledTableCell align="right" onClick={(event)=>handleOpenTeacherDetail(event,row.teacher)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
                                     <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
                                     <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event) => handledeleteStudent(event, row.id)} sx={{ color: "red" }} /></StyledTableCell>
                                 </StyledTableRow>
