@@ -10,6 +10,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import {useQuery} from "@apollo/client"
+import { getAllSchools } from '../graphql_client/queries';
+import { createTeacherMutation } from '../graphql_client/mutations';
+
 const Input = styled('input')({
     display: 'none',
 });
@@ -17,7 +21,6 @@ const FormTeacher=()=>{
     const [schoolSelect, setSchoolSelect] = React.useState('');
     const [teacherSelect, setTeacherSelect] = React.useState('');
     const [genderSelect, setGenderSelect] = React.useState('');
-
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -27,6 +30,10 @@ const FormTeacher=()=>{
     const handleChangeGender = (event) => {
         setGenderSelect(event.target.value);
     };
+    const {loading,error,data}=useQuery(getAllSchools);
+    if (loading)return<p>Loading data</p>
+    if (error)return<p>Error loading data</p>
+    console.log(data)
     return (
         <Box sx={{marginBottom:2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
@@ -52,9 +59,12 @@ const FormTeacher=()=>{
                             label="School"
                             onChange={handleChangeSchool}
                         >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            {
+                                data.schools.length?
+                                data.schools.map((item,index)=>(
+                                    <MenuItem value={item.id}>{item.name}</MenuItem>
+                                )):null
+                            }
                         </Select>
                     </FormControl>
                 </Box>        
