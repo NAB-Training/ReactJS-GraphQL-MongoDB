@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
 import { useMutation } from "@apollo/client";
 import { getAllSchools } from '../graphql_client/queries';
@@ -27,43 +26,19 @@ export default function FormSchool() {
     const onCreateSchool = (event) => {
         event.preventDefault()
         create({
-			variables: { name, address },
-			refetchQueries: [{ query: getAllSchools }]
-		})
-		setSchool({ name: '', address: '' })        
-        // toast.error(`You have not been created an account by admin !!!`, {
-        //     position: 'top-center',
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        // });
-        toast.success(`Active account successfully !!!`, {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });       
-        // Swal.fire({
-        //     title: 'Delete Student?',
-        //     text: "Do you want to permanently delete this student?",
-        //     icon: "warning",
-        //     marginTop: "200px",
-        //     showCancelButton: true,
-        //     confirmButtonColor: "#3085d6",
-        //     cancelButtonColor: "#d33",
-        //     cancelButtonText: "Cancel",
-        //     confirmButtonText: "Delete",
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
-        //         //  onDelete(id);
-        //     }
-        // });
+            variables: { name, address },
+            refetchQueries: [{ query: getAllSchools }]
+        })
+        setSchool({ name: '', address: '' })
+        Swal.fire({
+            title: 'Create Successfully?',
+            icon: "success",
+            marginTop: "200px",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cancel",
+        });
     }
     return (
         <Box sx={{ marginBottom: 2, backgroundColor: "white", borderRadius: 2, padding: 2, border: "1px solid #8c9eff" }}>
