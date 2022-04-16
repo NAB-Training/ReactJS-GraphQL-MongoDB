@@ -27,7 +27,11 @@ import Avatar from '@mui/material/Avatar';
 import { useQuery } from "@apollo/client"
 import { getAllStudents } from '../graphql_client/queries';
 import { deleteStudentMutation } from '../graphql_client/mutations';
-import { useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client";
+import { getAllTeachers } from '../graphql_client/queries';
+import { getAllSchools } from '../graphql_client/queries';
+import { updateStudentMutation } from '../graphql_client/mutations';
+
 const Input = styled('input')({
     display: 'none',
 });
@@ -62,7 +66,7 @@ export default function TableStudent() {
     const [genderSelect, setGenderSelect] = React.useState('');
     const [teacherDetail, setTeacherDetail] = React.useState([]);
     const [schoolDetail, setSchoolDetail] = React.useState([]);
-
+    const [edit, setEdit] = React.useState([]);
     const handleChangeSchool = (event) => {
         setSchoolSelect(event.target.value);
     };
@@ -77,12 +81,29 @@ export default function TableStudent() {
         setTeacherDetail(object);
     }
     const handleOpenSchoolDetail = (event,object) => {
-        console.log(object)
         setOpenSchool(!openSchool);
         setSchoolDetail(object);
     }
-    const handleOpenEditStudent = () => setOpenEdit(!openEdit);
-    const [deleteStudent, mutation] = useMutation(deleteStudentMutation)
+    const handleOpenEditStudent = (event,object) => {
+        console.log(object)
+        setOpenEdit(!openEdit);
+        setEdit(object);
+    }
+    const [student,setStudent]=React.useState({
+        name:"",
+        age:"",
+        gender:"",
+        image:"",
+    });
+    const onSubmit=(event)=>{
+        event.preventDefault();
+        updateStudent({
+            variables:{id:edit.id,image:"http://localhost:3000/assets/images/user.jpg",gender:genderSelect,name:student.name,age:parseInt(student.age),teacherId:teacherSelect,schoolId:schoolSelect},
+            refetchQueries:[{queries:getAllStudents}]
+        })
+    }
+    const [deleteStudent, mutationD] = useMutation(deleteStudentMutation)
+    const [updateStudent, mutationR] = useMutation(updateStudentMutation)
     const handledeleteStudent = (event, id) => {
         Swal.fire({
             title: 'Delete Student?',
@@ -100,7 +121,15 @@ export default function TableStudent() {
             }
         });
     }
-
+    const handleChangeInput=(event)=>{
+        const target=event.target;
+        const field=target.name;
+        const value=target.value;
+        setStudent({
+            ...student,
+            [field]:value
+        })
+    }
     const onDeleteStudent = (idStudent) => {
         deleteStudent({
             variables: { id: idStudent },
@@ -116,9 +145,15 @@ export default function TableStudent() {
             confirmButtonText: "Cancel",
         });
     }
-    const { loading, error, data } = useQuery(getAllStudents)
+    const { loading, error, data } = useQuery(getAllStudents);
+    const {loading:loadingS,error:errorS,data:dataS}=useQuery(getAllSchools)
+    const {loading:loadingT,error:errorT,data:dataT}=useQuery(getAllTeachers)
     if (loading) return <p>Loading students....</p>
     if (error) return <p>Error loading students!</p>
+    if (loadingS) return <p>Loading schools....</p>
+    if (errorS) return <p>Error loading schools!</p>
+    if (loadingT) return <p>Loading teachers....</p>
+    if (errorT) return <p>Error loading teacher!</p>
     return (
         <TableContainer component={Paper}>
             <Modal
@@ -311,17 +346,17 @@ export default function TableStudent() {
                             }}
                             noValidate
                             autoComplete="off">
-                            <TextField id="outlined-basic" label="Name" variant="outlined" />
+                            <TextField onChange={(event)=>handleChangeInput(event)} name="name" defaultValue={edit.name} id="outlined-basic" label="Name" variant="outlined" />
                             <label style={{ width: 35 }} htmlFor="icon-button-file">
                                 <Input accept="image/*" id="icon-button-file" type="file" />
                                 <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera sx={{ marginTop: 1 }} />
                                 </IconButton>
                             </label>
-                            <TextField id="outlined-basic" type="number" label="Age" variant="outlined" />
+                            <TextField onChange={(event)=>handleChangeInput(event)} name="age" defaultValue={edit.age} id="outlined-basic" type="number" label="Age" variant="outlined" />
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">School</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.school?edit.school.name:null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -329,15 +364,18 @@ export default function TableStudent() {
                                         label="School"
                                         onChange={handleChangeSchool}
                                     >
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                       {
+                                dataS.schools.length?
+                                dataS.schools.map((item,index) => (
+                                    <MenuItem key={index}value={item.id?item.id:null}>{item.name?item.name:null}</MenuItem>
+                                 )):null
+                            }
                                     </Select>
                                 </FormControl>
                             </Box>
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">Teacher</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.teacher?edit.teacher.name:null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -345,15 +383,18 @@ export default function TableStudent() {
                                         label="Teacher"
                                         onChange={handleChangeTeacher}
                                     >
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                       {
+                                dataT.teachers.length?
+                                dataT.teachers.map((item,index)=>(
+                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                                )):null
+                            }
                                     </Select>
                                 </FormControl>
                             </Box>
                             <Box>
                                 <FormControl sx={{ width: 150 }}>
-                                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">{edit.gender?edit.gender:null}</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -366,7 +407,7 @@ export default function TableStudent() {
                                     </Select>
                                 </FormControl>
                             </Box>
-                            <Button variant="contained">Submit</Button>
+                            <Button onClick={(event)=>onSubmit(event)} variant="contained">Submit</Button>
                         </Box>
                     </Box>
                 </Box>
@@ -399,7 +440,7 @@ export default function TableStudent() {
                                     <StyledTableCell align="right">{row.gender ? row.gender : null}</StyledTableCell>
                                     <StyledTableCell align="right" onClick={(event)=>handleOpenSchoolDetail(event,row.school)}>{row.school.name ? row.school.name : null}</StyledTableCell>
                                     <StyledTableCell align="right" onClick={(event)=>handleOpenTeacherDetail(event,row.teacher)}>{row.teacher.name ? row.teacher.name : null}</StyledTableCell>
-                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={handleOpenEditStudent} sx={{ color: "blue" }} /></StyledTableCell>
+                                    <StyledTableCell align="right"><EditOutlinedIcon onClick={(event)=>handleOpenEditStudent(event,row)} sx={{ color: "blue" }} /></StyledTableCell>
                                     <StyledTableCell align="right"><DeleteOutlineOutlinedIcon onClick={(event) => handledeleteStudent(event, row.id)} sx={{ color: "red" }} /></StyledTableCell>
                                 </StyledTableRow>
                             )) : null}
