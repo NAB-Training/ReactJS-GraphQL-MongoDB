@@ -3,8 +3,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -51,6 +49,15 @@ const FormTeacher=()=>{
             variables:{name,age:parseInt(age),schoolId:schoolSelect,gender:genderSelect},
             refetchQueries:[{queries:getAllTeachers}]
         });
+        Swal.fire({
+            title: 'Create Successfully?',
+            icon: "success",
+            marginTop: "200px",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cancel",
+        });    
         setTeacher({name:"",age:""});
         setSchoolSelect("");
         setGenderSelect("")
