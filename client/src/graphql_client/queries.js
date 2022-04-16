@@ -61,6 +61,10 @@ const getAllStudents=gql`
             id
             name
             address
+            teachers{
+                id
+                name
+            }
          }
          teacher{
              id
