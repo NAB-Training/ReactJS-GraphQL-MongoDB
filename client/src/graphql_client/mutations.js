@@ -41,7 +41,7 @@ mutation createStudent(
     $teacherId:String
     $image:String
 ){
-    createStudent(name:$name,age:$age,gender:$gender,schoolId:$schoolId,teacherId:$teacherId,image:"http://localhost:3000/assets/images/user.jpg"){
+    createStudent(name:$name,age:$age,gender:$gender,schoolId:$schoolId,teacherId:$teacherId,image:$image){
         id
         name
         age

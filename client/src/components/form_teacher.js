@@ -34,7 +34,6 @@ const FormTeacher=()=>{
         setGenderSelect(event.target.value);
     };
     const {loading,error,data}=useQuery(getAllSchools);
-    console.log(data)
     const handleChangeInput=(event)=>{
         const target=event.target;
         const field=target.name;
